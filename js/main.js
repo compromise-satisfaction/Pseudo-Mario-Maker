@@ -11,17 +11,35 @@ function Load(width,height){
     };
     document.body.appendChild(ele);
   };
-  core.preload("image/image.png");
+  core.preload("image/image.png","image/Blue_back.png");
   core.fps = 10;
   core.onload = function(){
     var StartScene = function(){
       var scene = new Scene();                                // 新しいシーンを作る
-      var Start = new Sprite(505,505);
-      Start.image = core.assets["image/image.png"];
-      Start.x = 0;
-      Start.y = 0;
-      scene.addChild(Start);
+      var Back = new Sprite(width, height);
+      Back.image = core.assets["image/Blue_back.png"];
+      Back.x = 0;
+      Back.y = 0;
+      scene.addChild(Back);
+
+      var Block = Class.create(Sprite, {
+          initialize: function(x,y) {
+              Sprite.call(this,32,32);
+              this.x = x*32;
+              this.y = y;
+              this.image = core.assets["image/image.png"];
+              scene.addChild(this);
+          }
+      });
+
+      var Blocks = [];
+
+      for (var i = 0; i < 110; i++){
+        Blocks[i] = new Block(i,height-32);
+      }
+
       scene.on("touchstart",function(e){
+        return;
         core.replaceScene(MenuScene(0));
       })
       return scene;
